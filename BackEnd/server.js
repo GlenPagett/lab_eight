@@ -35,7 +35,7 @@ const movieSchema = new mongoose.Schema({
     Poster:String
 });
 
-const movieModel = mongoose.model('martin', movieSchema);
+const movieModel = mongoose.model('martindf', movieSchema);
 
 
 app.get('/', (req, res) => {
@@ -64,6 +64,18 @@ app.get('/api/movies/:id',(req, res)=>{
     })
 })
 
+app.put('/api/movies/:id', (req, res)=>{
+    console.log("Update: " + req.params.id);
+
+    movieModel.findByIdAndUpdate(req.params.id, req.body, {new:true},
+        (err, data)=>{
+            if(err){
+                console.log(err)
+            }
+            res.send(data);
+    })
+})
+
 app.get('/api/movies', (req, res) => {
     movieModel.find((err, data)=>{
         res.json(data);
@@ -72,8 +84,6 @@ app.get('/api/movies', (req, res) => {
            // https://m.media-amazon.com/images/M/MV5BNDQ4YzFmNzktMmM5ZC00MDZjLTk1OTktNDE2ODE4YjM2MjJjXkEyXkFqcGdeQXVyNTA4NzY1MzY@._V1_SX300.jpg
       
 })
-
-
 
 app.listen(port, () => {
     console.log(`Example app listening at http://localhost:${port}`)
